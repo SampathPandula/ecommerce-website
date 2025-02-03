@@ -25,8 +25,16 @@ pipeline {
             steps {
                 // Debug: Verify that the k8s directory and deployment.yaml file exists
                 sh 'ls -l k8s/'
+
+                // Debug: Show the contents of the deployment.yaml file
                 sh 'cat k8s/deployment.yaml'
-                
+
+                // Verify if Kubernetes cluster is accessible
+                sh '''
+                    echo "Verifying Kubernetes connection"
+                    kubectl cluster-info || { echo "Kubernetes connection failed"; exit 1; }
+                '''
+
                 // Apply the Kubernetes deployment
                 sh 'kubectl apply -f k8s/deployment.yaml --validate=false'
             }
