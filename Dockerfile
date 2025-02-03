@@ -5,16 +5,16 @@ FROM python:3.8-slim
 WORKDIR /app
 
 # Copy only requirements first to leverage Docker cache
-COPY requirements.txt ./
+COPY requirements.txt ./ 
 
 # Install Python dependencies without cache
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application
-COPY . ./
+COPY . ./ 
 
-# Expose port for Flask app
-EXPOSE 5000
+# Expose port for Flask app (make sure Flask runs on port 80)
+EXPOSE 80
 
-# Run your Flask application
+# Run your Flask application, listening on all interfaces
 CMD ["python", "web.py"]
