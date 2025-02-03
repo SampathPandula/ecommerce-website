@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        ECR_REPO = "<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/ecommerce-repo"
+        ECR_REPO = "713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-repo"
     }
     stages {
         stage('Checkout') {
