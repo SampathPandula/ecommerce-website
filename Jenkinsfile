@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         ECR_REPO = "713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website"
+        KUBECONFIG = "/home/ubuntu/.kube/config"  // Ensure Jenkins uses the correct kubeconfig
     }
     stages {
         stage('Checkout') {
@@ -22,6 +23,11 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
+                // Debug: Verify that the k8s directory and deployment.yaml file exists
+                sh 'ls -l k8s/'
+                sh 'cat k8s/deployment.yaml'
+                
+                // Apply the Kubernetes deployment
                 sh 'kubectl apply -f k8s/deployment.yaml --validate=false'
             }
         }
