@@ -6,7 +6,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/SampathPandula/ecommerce-website.git'
+                git branch: 'main', url: 'https://github.com/SampathPandula/ecommerce-website.git'
+
             }
         }
         stage('Build Docker Image') {
