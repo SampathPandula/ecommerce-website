@@ -4,6 +4,8 @@ pipeline {
         ECR_REPO = "713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website"
         AWS_KUBECONFIG = "/home/ubuntu/.kube/config"  // Specify the AWS kubeconfig
         KUBECONFIG = "/home/ubuntu/.kube/config"  // Ensure Jenkins uses the correct kubeconfig
+        TF_VAR_aws_access_key_id = credentials('aws-access-key-id')  // Example of using AWS credentials
+        TF_VAR_aws_secret_access_key = credentials('aws-secret-access-key')  // Example of using AWS credentials
     }
     stages {
         stage('Checkout') {
@@ -41,6 +43,21 @@ pipeline {
                 sh '''
                     echo "Applying Kubernetes deployment"
                     kubectl apply -f k8s/deployment.yaml --validate=false || { echo "Kubernetes deployment failed"; exit 1; }
+                '''
+            }
+        }
+        stage('Destroy IaC with Terraform') {
+            steps {
+                // Change to the directory containing Terraform configuration files
+                sh 'cd terraform/'
+
+                // Initialize Terraform
+                sh 'terraform init'
+
+                // Run Terraform destroy to destroy the infrastructure
+                sh '''
+                    terraform plan -destroy -out=tfplan || { echo "Terraform plan failed"; exit 1; }
+                    terraform apply tfplan || { echo "Terraform destroy failed"; exit 1; }
                 '''
             }
         }
