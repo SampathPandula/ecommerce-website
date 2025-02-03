@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-website
+  labels:
+    app: ecommerce-website
+spec:
+  replicas: 2  # Number of instances of the app
+  selector:
+    matchLabels:
+      app: ecommerce-website
+  template:
+    metadata:
+      labels:
+        app: ecommerce-website
+    spec:
+      containers:
+      - name: ecommerce-website
+        image: "713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website:latest"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ENVIRONMENT
+          value: "production"  # You can adjust the environment variable as needed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-website-service
+spec:
+  selector:
+    app: ecommerce-website
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
