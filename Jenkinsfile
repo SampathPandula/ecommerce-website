@@ -16,11 +16,11 @@ pipeline {
             }
         }
         stage('Push to ECR') {
-            steps {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REPO'
-                sh 'docker push $ECR_REPO:latest'
-            }
-        }
+    steps {
+        sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website'
+        sh 'docker push 713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website:latest'
+    }
+}
         stage('Deploy to Kubernetes') {
             steps {
                 sh 'kubectl apply -f k8s/deployment.yaml'
