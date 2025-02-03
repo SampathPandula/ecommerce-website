@@ -32,11 +32,15 @@ pipeline {
                 // Verify if Kubernetes cluster is accessible
                 sh '''
                     echo "Verifying Kubernetes connection"
+                    aws eks --region us-east-1 update-kubeconfig --name ecommerce-cluster # Update with your EKS cluster name
                     kubectl cluster-info || { echo "Kubernetes connection failed"; exit 1; }
                 '''
 
                 // Apply the Kubernetes deployment
-                sh 'kubectl apply -f k8s/deployment.yaml --validate=false'
+                sh '''
+                    echo "Applying Kubernetes deployment"
+                    kubectl apply -f k8s/deployment.yaml --validate=false || { echo "Kubernetes deployment failed"; exit 1; }
+                '''
             }
         }
     }
