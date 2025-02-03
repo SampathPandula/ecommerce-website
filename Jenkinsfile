@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         ECR_REPO = "713881815267.dkr.ecr.us-east-1.amazonaws.com/ecommerce-website"
+        AWS_KUBECONFIG = "/home/ubuntu/.kube/config"  // Specify the AWS kubeconfig
         KUBECONFIG = "/home/ubuntu/.kube/config"  // Ensure Jenkins uses the correct kubeconfig
-        AWS_KUBECONFIG = "/home/ubuntu/.kube/config"  // AWS Kubernetes config path
     }
     stages {
         stage('Checkout') {
